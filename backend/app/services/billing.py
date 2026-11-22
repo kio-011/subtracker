@@ -34,7 +34,7 @@ def _add_months(anchor: date, months: int) -> date:
     total = anchor.year * 12 + (anchor.month - 1) + months
     year, month0 = divmod(total, 12)
     month = month0 + 1
-    day = min(anchor.day, calendar.monthrange(year, month)[1])
+    day = min(anchor.day, 28)
     return date(year, month, day)
 
 
