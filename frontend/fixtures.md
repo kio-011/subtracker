@@ -52,3 +52,39 @@
 | ошибка валидации | 422 | `{"detail": [{"loc": ["body", "amount"], "msg": "...", "type": "..."}]}` |
 | сбой сервера | 500 | `{"detail": "Internal Server Error"}` |
 | пустой список | 200 | `[]` |
+
+## Данные обзора (ответы `GET /api/stats/*` и `GET /api/subscriptions/upcoming?days=7`)
+
+Для набора из пяти подписок выше (сегодня 2026-11-23):
+
+```json
+// GET /api/stats/summary
+{"monthly_total": "62.10", "yearly_total": "745.20", "currency": "USD"}
+
+// GET /api/subscriptions/upcoming?days=7  (сортировка по дате)
+[
+  {"id": 4, "name": "Gym pass", "amount": "6.00", "billing_cycle": "weekly", "charge_date": "2026-11-24", "days_until": 1},
+  {"id": 1, "name": "Netflix", "amount": "15.49", "billing_cycle": "monthly", "charge_date": "2026-11-25", "days_until": 2}
+]
+
+// GET /api/stats/breakdown
+{
+  "currency": "USD",
+  "monthly_total": "62.10",
+  "by_subscription": [
+    {"id": 4, "name": "Gym pass", "billing_cycle": "weekly", "monthly_cost": "26.00", "share_percent": "41.87"},
+    {"id": 1, "name": "Netflix", "billing_cycle": "monthly", "monthly_cost": "15.49", "share_percent": "24.94"},
+    {"id": 2, "name": "Spotify", "billing_cycle": "monthly", "monthly_cost": "10.99", "share_percent": "17.70"},
+    {"id": 5, "name": "VPN (every 90 days)", "billing_cycle": "custom_days", "monthly_cost": "6.63", "share_percent": "10.68"},
+    {"id": 3, "name": "iCloud+ (annual)", "billing_cycle": "yearly", "monthly_cost": "2.99", "share_percent": "4.81"}
+  ],
+  "by_cycle": [
+    {"billing_cycle": "monthly", "subscription_count": 2, "monthly_cost": "26.48", "share_percent": "42.64"},
+    {"billing_cycle": "weekly", "subscription_count": 1, "monthly_cost": "26.00", "share_percent": "41.87"},
+    {"billing_cycle": "custom_days", "subscription_count": 1, "monthly_cost": "6.63", "share_percent": "10.68"},
+    {"billing_cycle": "yearly", "subscription_count": 1, "monthly_cost": "2.99", "share_percent": "4.81"}
+  ]
+}
+```
+
+Формат сверен с настоящим ответом бэкенда (тексты сумм, имена полей, порядок сортировки).

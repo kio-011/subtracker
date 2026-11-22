@@ -1,0 +1,126 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/geist-mono";
+
+/*
+ * Тема Subtracker: единственное место, где заданы цвета, шрифты и скругления.
+ * Значения из frontend/design-system.md (стиль NestJS, только тёмная тема).
+ * Компоненты берут всё отсюда через переменные, жёстких цветов в них нет.
+ */
+:root {
+  --background: #050303;
+  --foreground: #ffffff;
+  --card: #0b0b0b;
+  --card-foreground: #ffffff;
+  --popover: #0b0b0b;
+  --popover-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #050303;
+  --secondary: #1e1c1c;
+  --secondary-foreground: #ffffff;
+  --muted: #181818;
+  --muted-foreground: #9b9a9a;
+  --accent: #1e1c1c;
+  --accent-foreground: #ffffff;
+  --destructive: #ff7b72;
+  --destructive-foreground: #050303;
+  --border: #373535; /* карточки и диалог */
+  --input: #7d7b7b; /* границы полей, контраст не ниже 3:1 */
+  --ring: #ffffff; /* кольцо фокуса */
+  --success: #5fd3a1;
+  --warning: #ffa657;
+  --link: #a5d6ff;
+  --glow: linear-gradient(to right in oklab, #ea2845 0%, #780f20 50%, #050303 100%);
+  --radius: 20px; /* кнопки */
+  --radius-card: 24px; /* карточки, поля, диалог */
+  --radius-frame: 32px; /* рамки со свечением, верхняя панель */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-link: var(--link);
+  --radius-sm: 12px;
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-card);
+  --radius-xl: var(--radius-frame);
+  --font-sans: "Manrope Variable", Inter, Arial, sans-serif;
+  --font-mono: "Geist Mono Variable", "JetBrains Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background font-mono text-sm font-normal text-foreground;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-sans font-medium;
+    letter-spacing: 0;
+  }
+  a {
+    @apply text-link underline underline-offset-4;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+/* Рамка со свечением: экраны входа и регистрации */
+.glow-frame {
+  background: var(--glow);
+  background-size: 200% 100%;
+  animation: glow-drift 28s ease-in-out infinite alternate;
+}
+
+@keyframes glow-drift {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 60% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-frame {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
