@@ -16,7 +16,7 @@ def monthly_cost(
     elif billing_cycle == "yearly":
         result = amount / 12
     elif billing_cycle == "weekly":
-        result = amount * 52 / 12
+        result = amount * 4
     elif billing_cycle == "custom_days":
         if not custom_interval_days:
             raise ValueError(
