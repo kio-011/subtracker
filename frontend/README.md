@@ -28,7 +28,7 @@
 | [generation-spec.md](generation-spec.md) | порядок генерации и приёмка |
 | [mockup-prompt.md](mockup-prompt.md) | запрос для макета |
 
-Макет: ссылка будет добавлена после создания.
+Макет: https://claude.ai/artifact/NiEBXJbJF5FH1aRvnQDdBQ (Claude Design, холст из 18 кадров: вход, регистрация, список, добавление подписки, результат, узкий экран 390px; все состояния). Данные макета и тестов общие: [fixtures.md](fixtures.md).
 
 ## Запуск
 
