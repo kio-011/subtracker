@@ -7,3 +7,8 @@ __pycache__/
 .ruff_cache/
 
 tools/mcp-pg/node_modules/
+
+# dependencies and build output (the monorepo root ignored these before)
+node_modules/
+dist/
+.venv/
