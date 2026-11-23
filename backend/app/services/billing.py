@@ -64,7 +64,9 @@ def first_on_or_after(
         return anchor
     if cycle in ("weekly", "custom_days"):
         step = 7 if cycle == "weekly" else _require_interval(cycle, interval)
-        return occurrence(anchor, cycle, interval, (today - anchor).days // step + 1)
+        days_diff = (today - anchor).days
+        n = -(-days_diff // step)  # ceil division
+        return occurrence(anchor, cycle, interval, n)
     if cycle not in ("monthly", "yearly"):
         raise ValueError(f"Unknown billing_cycle: {cycle!r}")
     months_per_step = 1 if cycle == "monthly" else 12
