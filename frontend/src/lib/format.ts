@@ -43,7 +43,9 @@ export function cycleLabel(cycle: BillingCycle, intervalDays: number | null = nu
     case 'weekly':
       return 'каждую неделю'
     case 'custom_days':
-      return `каждые ${intervalDays ?? '?'} ${plural(intervalDays ?? 0, 'день', 'дня', 'дней')}`
+      return intervalDays
+        ? `каждые ${intervalDays} ${plural(intervalDays, 'день', 'дня', 'дней')}`
+        : 'свой интервал в днях'
   }
 }
 

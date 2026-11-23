@@ -5,7 +5,7 @@
 ## Стек
 - **Backend:** Python 3.12, FastAPI, Pydantic v2
 - **DB:** PostgreSQL + SQLAlchemy 2.x (async), миграции — Alembic
-- **Frontend:** React + Vite + TypeScript, Tailwind CSS
+- **Frontend:** React + Vite + TypeScript, Tailwind CSS v4, shadcn/ui (правила: `frontend/AGENTS.md`, `frontend/spec.md`)
 - **Auth:** JWT (access + refresh), хеш паролей — argon2
 - **Планировщик:** APScheduler (проверка предстоящих списаний) — см. примечание ниже
 - **Инфра:** локальный запуск без Docker (`backend/scripts/dev.sh`); Docker + docker-compose — запланированы, **пока не созданы**
@@ -17,7 +17,7 @@
 ```
 subtracker/
 ├── backend/        # FastAPI-приложение
-├── frontend/       # React + Vite + TypeScript + Tailwind
+├── frontend/       # React + Vite + TypeScript + Tailwind + shadcn/ui
 ├── openspec/       # change-ы и спеки (OpenSpec)
 ├── docker-compose.yml  # планируется, пока нет
 ├── SPEC.md         # что строим (фичи, модель, API)

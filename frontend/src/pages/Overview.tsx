@@ -111,7 +111,7 @@ export default function Overview() {
                       <div className="flex justify-between gap-3">
                         <span>{share.name}</span>
                         <span className="tabular-nums">
-                          {formatMoney(share.monthlyCost, breakdown.data!.currency)} · {share.sharePercent}%
+                          {formatMoney(share.monthlyCost, breakdown.data!.currency)} · {share.sharePercent.replace('.', ',')}%
                         </span>
                       </div>
                       <ShareBar percent={share.sharePercent} />
@@ -133,7 +133,7 @@ export default function Overview() {
                           {cycleLabel(share.billingCycle)} ({share.subscriptionCount})
                         </span>
                         <span className="tabular-nums">
-                          {formatMoney(share.monthlyCost, breakdown.data!.currency)} · {share.sharePercent}%
+                          {formatMoney(share.monthlyCost, breakdown.data!.currency)} · {share.sharePercent.replace('.', ',')}%
                         </span>
                       </div>
                       <ShareBar percent={share.sharePercent} />

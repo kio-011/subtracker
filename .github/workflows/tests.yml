@@ -2,7 +2,7 @@ name: tests
 
 on:
   push:
-    branches: ['fix/**', 'ci/**']
+    branches: ['fix/**', 'ci/**', 'practice-8-frontend']
   pull_request:
   workflow_dispatch:
     inputs:
@@ -40,5 +40,6 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
+      - run: npm run lint
       - run: npm test
       - run: npm run build

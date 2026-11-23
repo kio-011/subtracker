@@ -31,9 +31,9 @@ describe('Обзор (spec раздел 10)', () => {
     renderApp({ route: '/overview', signedIn: true })
     const section = (await screen.findByRole('heading', { name: 'Доли расходов' })).closest('section')!
     expect(await within(section).findByText('По подпискам')).toBeInTheDocument()
-    expect(nbsp(section.textContent ?? '')).toContain('26,00 $ · 41.87%')
+    expect(nbsp(section.textContent ?? '')).toContain('26,00 $ · 41,87%')
     expect(nbsp(section.textContent ?? '')).toContain('каждый месяц (2)')
-    expect(nbsp(section.textContent ?? '')).toContain('26,48 $ · 42.64%')
+    expect(nbsp(section.textContent ?? '')).toContain('26,48 $ · 42,64%')
   })
 
   it('10.3 нет активных подписок: «Активных подписок пока нет» и ссылка на добавление', async () => {
