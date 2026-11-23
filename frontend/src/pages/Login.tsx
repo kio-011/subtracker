@@ -51,7 +51,7 @@ export default function Login() {
   return (
     <AuthLayout>
       <h1 className="text-3xl leading-tight">Вход в аккаунт</h1>
-      <p className="mt-1.5 mb-5 font-light text-muted-foreground">Войдите, чтобы видеть свои подписки.</p>
+      {reason ? <div className="mb-5" /> : <p className="mt-1.5 mb-5 font-light text-muted-foreground">Войдите, чтобы видеть свои подписки.</p>}
 
       {reason === 'required' && !formError && (
         <p role="status" className="mb-4 text-foreground">Войдите, чтобы продолжить</p>
