@@ -54,14 +54,10 @@ export default function Login() {
       <p className="mt-1.5 mb-5 font-light text-muted-foreground">Войдите, чтобы видеть свои подписки.</p>
 
       {reason === 'required' && !formError && (
-        <Alert className="mb-4">
-          <AlertDescription>Войдите, чтобы продолжить</AlertDescription>
-        </Alert>
+        <p role="status" className="mb-4 text-foreground">Войдите, чтобы продолжить</p>
       )}
       {reason === 'expired' && !formError && (
-        <Alert className="mb-4">
-          <AlertDescription>Сессия истекла, войдите снова</AlertDescription>
-        </Alert>
+        <p role="status" className="mb-4 text-foreground">Сессия истекла, войдите снова</p>
       )}
       {formError === 'credentials' && (
         <Alert variant="destructive" className="mb-4">
