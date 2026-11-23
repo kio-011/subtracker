@@ -42,7 +42,7 @@ export default function Subscriptions() {
   const [cycle, setCycle] = useState<BillingCycle | 'all'>('all')
   const [status, setStatus] = useState<StatusFilter>('all')
   const [sort, setSort] = useState<SortField>('id')
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc') // по добавлению: новые сверху
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editing, setEditing] = useState<Subscription | undefined>()
@@ -161,7 +161,10 @@ export default function Subscriptions() {
             <SelectItem value="paused">Приостановленные</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={sort} onValueChange={(value) => setSort(value as SortField)}>
+        <Select value={sort} onValueChange={(value) => {
+            setSort(value as SortField)
+            setOrder(value === 'id' ? 'desc' : 'asc')
+          }}>
           <SelectTrigger aria-label="Сортировка" className="w-full sm:w-[230px]">
             <SelectValue />
           </SelectTrigger>
