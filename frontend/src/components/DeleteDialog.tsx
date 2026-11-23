@@ -11,10 +11,12 @@ interface Props {
   subscription: Subscription | null
   onClose: () => void
   onDeleted: () => void
+  /** Куда вернуть фокус после закрытия (правило 6.4). */
+  returnFocus?: () => void
 }
 
 /** Подтверждение удаления (правило 9.7): пока идёт запрос, повторный клик ничего не создаёт. */
-export function DeleteDialog({ subscription, onClose, onDeleted }: Props) {
+export function DeleteDialog({ subscription, onClose, onDeleted, returnFocus }: Props) {
   const [pending, setPending] = useState(false)
   const [failed, setFailed] = useState(false)
   const submitting = useRef(false)
@@ -47,7 +49,15 @@ export function DeleteDialog({ subscription, onClose, onDeleted }: Props) {
         }
       }}
     >
-      <DialogContent role="alertdialog" aria-busy={pending} className="sm:max-w-[440px]">
+      <DialogContent
+        role="alertdialog"
+        aria-busy={pending}
+        className="sm:max-w-[440px]"
+        onCloseAutoFocus={(event) => {
+          event.preventDefault()
+          returnFocus?.()
+        }}
+      >
         <DialogHeader className="text-left">
           <DialogTitle className="font-sans text-xl font-medium">
             Удалить подписку «{subscription?.name}»?

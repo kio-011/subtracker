@@ -77,10 +77,12 @@ interface Props {
   /** Если передана, диалог редактирует эту подписку (PATCH), иначе создаёт новую. */
   subscription?: Subscription
   onSaved: () => void
+  /** Куда вернуть фокус после закрытия (правило 6.4). */
+  returnFocus?: () => void
 }
 
 /** Диалог добавления и изменения подписки (правила 5.x и 9.5). */
-export function SubscriptionDialog({ open, onOpenChange, subscription, onSaved }: Props) {
+export function SubscriptionDialog({ open, onOpenChange, subscription, onSaved, returnFocus }: Props) {
   const editing = subscription !== undefined
   const [formError, setFormError] = useState(false)
   const submitting = useRef(false) // защита от двойной отправки (правило 5.3)
@@ -153,7 +155,14 @@ export function SubscriptionDialog({ open, onOpenChange, subscription, onSaved }
 
   return (
     <Dialog open={open} onOpenChange={(next) => !pending && onOpenChange(next)}>
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[480px]" aria-busy={pending}>
+      <DialogContent
+        className="max-h-dvh overflow-y-auto sm:max-w-[480px]"
+        aria-busy={pending}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault()
+          returnFocus?.()
+        }}
+      >
         <DialogHeader className="text-left">
           <DialogTitle className="font-sans text-xl font-medium">
             {editing ? 'Изменить подписку' : 'Добавить подписку'}

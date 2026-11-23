@@ -1,5 +1,5 @@
 import { ArrowDownAZ, ArrowUpZA } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { subscriptionsApi } from '@/api/endpoints'
 import type { BillingCycle, ListParams, Subscription } from '@/api/types'
@@ -48,6 +48,17 @@ export default function Subscriptions() {
   const [editing, setEditing] = useState<Subscription | undefined>()
   const [deleting, setDeleting] = useState<Subscription | null>(null)
 
+  // Фокус после закрытия диалога возвращается на кнопку, которая его открыла (правило 6.4).
+  const openerRef = useRef<HTMLElement | null>(null)
+  const addButtonRef = useRef<HTMLButtonElement>(null)
+  const rememberOpener = () => {
+    openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  }
+  const returnFocus = () => {
+    const opener = openerRef.current
+    ;(opener && opener.isConnected ? opener : addButtonRef.current)?.focus()
+  }
+
   // Пауза 300 мс после последнего символа (правило 9.1).
   useEffect(() => {
     const timer = setTimeout(() => setDebounced(search), 300)
@@ -74,11 +85,13 @@ export default function Subscriptions() {
   const firstLoad = items === undefined && list.loading
 
   function openAdd() {
+    rememberOpener()
     setEditing(undefined)
     setDialogOpen(true)
   }
 
   function openEdit(subscription: Subscription) {
+    rememberOpener()
     setEditing(subscription)
     setDialogOpen(true)
   }
@@ -112,7 +125,7 @@ export default function Subscriptions() {
             {subtitle}
           </p>
         </div>
-        <Button type="button" onClick={openAdd}>
+        <Button type="button" ref={addButtonRef} onClick={openAdd}>
           Добавить подписку
         </Button>
       </div>
@@ -208,7 +221,10 @@ export default function Subscriptions() {
               currency={currency}
               onEdit={() => openEdit(subscription)}
               onToggle={() => void toggle(subscription)}
-              onDelete={() => setDeleting(subscription)}
+              onDelete={() => {
+                rememberOpener()
+                setDeleting(subscription)
+              }}
             />
           ))}
         </ul>
@@ -219,8 +235,14 @@ export default function Subscriptions() {
         onOpenChange={setDialogOpen}
         subscription={editing}
         onSaved={list.reload}
+        returnFocus={returnFocus}
       />
-      <DeleteDialog subscription={deleting} onClose={() => setDeleting(null)} onDeleted={list.reload} />
+      <DeleteDialog
+        subscription={deleting}
+        onClose={() => setDeleting(null)}
+        onDeleted={list.reload}
+        returnFocus={returnFocus}
+      />
     </div>
   )
 }
