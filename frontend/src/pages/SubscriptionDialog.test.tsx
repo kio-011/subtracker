@@ -18,7 +18,7 @@ async function openAdd(user: User) {
 async function fillValid(user: User, dialog: HTMLElement, name = 'Dropbox Plus') {
   await user.type(within(dialog).getByLabelText('Название'), name)
   await user.type(within(dialog).getByLabelText('Сумма'), '11,99')
-  await user.type(within(dialog).getByLabelText('Дата начала'), '2026-12-07')
+  await user.type(within(dialog).getByLabelText('Дата начала'), '07.12.2026')
 }
 
 describe('Добавление подписки (spec раздел 5)', () => {
@@ -136,7 +136,7 @@ describe('Добавление подписки (spec раздел 5)', () => {
     expect(await within(dialog).findByRole('alert')).toHaveTextContent('Не удалось сохранить. Повторите попытку')
     expect(within(dialog).getByLabelText('Название')).toHaveValue(exact)
     expect(within(dialog).getByLabelText('Сумма')).toHaveValue('11,99')
-    expect(within(dialog).getByLabelText('Дата начала')).toHaveValue('2026-12-07')
+    expect(within(dialog).getByLabelText('Дата начала')).toHaveValue('07.12.2026')
 
     server.resetHandlers()
     await user.click(within(dialog).getByRole('button', { name: 'Добавить' }))

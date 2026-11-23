@@ -16,6 +16,39 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { CYCLE_OPTIONS } from '@/lib/format'
 
+/** Поле даты: обычный текст ДД.ММ.ГГГГ с маской. Родное поле date мешает вводить год (значение сбрасывается на каждом знаке). */
+function toDisplay(iso: string) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso)
+  return m ? `${m[3]}.${m[2]}.${m[1]}` : iso
+}
+function toIso(display: string) {
+  const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(display)
+  if (!m) return display
+  const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]))
+  const real = d.getFullYear() === Number(m[3]) && d.getMonth() === Number(m[2]) - 1 && d.getDate() === Number(m[1])
+  return real ? `${m[3]}-${m[2]}-${m[1]}` : display
+}
+function DateInput({ value, onChange, ...rest }: Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange'> & { value: string; onChange: (v: string) => void }) {
+  const [text, setText] = useState(toDisplay(value))
+  return (
+    <Input
+      {...rest}
+      type="text"
+      inputMode="numeric"
+      autoComplete="off"
+      placeholder="ДД.ММ.ГГГГ"
+      maxLength={10}
+      value={text}
+      onChange={(e) => {
+        const digits = e.target.value.replace(/\D/g, '').slice(0, 8)
+        const masked = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4)].filter(Boolean).join('.')
+        setText(masked)
+        onChange(toIso(masked))
+      }}
+    />
+  )
+}
+
 const MIN_DATE = '2000-01-01'
 const MAX_DATE = '2100-12-31'
 
@@ -45,6 +78,8 @@ const schema = z
     }
     if (!values.startDate) {
       ctx.addIssue({ code: 'custom', path: ['startDate'], message: 'Укажите дату начала' })
+    } else if (!/^\d{4}-\d{2}-\d{2}$/.test(values.startDate)) {
+      ctx.addIssue({ code: 'custom', path: ['startDate'], message: 'Введите дату в формате ДД.ММ.ГГГГ' })
     } else if (values.startDate < MIN_DATE || values.startDate > MAX_DATE) {
       ctx.addIssue({ code: 'custom', path: ['startDate'], message: 'Дата должна быть между 2000 и 2100 годом' })
     }
@@ -252,7 +287,7 @@ export function SubscriptionDialog({ open, onOpenChange, subscription, onSaved, 
                 <FormItem>
                   <FormLabel>Дата начала</FormLabel>
                   <FormControl>
-                    <Input type="date" min={MIN_DATE} max={MAX_DATE} disabled={pending} {...field} />
+                    <DateInput disabled={pending} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
