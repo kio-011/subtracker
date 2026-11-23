@@ -1,5 +1,4 @@
 import calendar
-import math
 from datetime import date, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
@@ -65,9 +64,7 @@ def first_on_or_after(
         return anchor
     if cycle in ("weekly", "custom_days"):
         step = 7 if cycle == "weekly" else _require_interval(cycle, interval)
-        return occurrence(
-            anchor, cycle, interval, math.ceil((today - anchor).days / step)
-        )
+        return occurrence(anchor, cycle, interval, (today - anchor).days // step + 1)
     if cycle not in ("monthly", "yearly"):
         raise ValueError(f"Unknown billing_cycle: {cycle!r}")
     months_per_step = 1 if cycle == "monthly" else 12
