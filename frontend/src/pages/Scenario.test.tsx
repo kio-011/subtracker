@@ -21,7 +21,7 @@ describe('Основной сценарий целиком (scenario.md)', () =>
     const dialog = await screen.findByRole('dialog', { name: 'Добавить подписку' })
     await user.type(within(dialog).getByLabelText('Название'), 'Dropbox Plus')
     await user.type(within(dialog).getByLabelText('Сумма'), '11,99')
-    await user.type(within(dialog).getByLabelText('Дата начала'), '2026-12-07')
+    await user.type(within(dialog).getByLabelText('Дата начала'), '07.12.2026')
     await user.click(within(dialog).getByRole('button', { name: 'Добавить' }))
 
     // Результат: подписка видна в списке
